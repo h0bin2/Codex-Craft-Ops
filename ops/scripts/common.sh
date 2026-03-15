@@ -162,7 +162,7 @@ task_resolved_doc_root() {
 task_requires_docs() {
   local file="$1"
   case "$(task_type_from_file "$file")" in
-    documentation|mixed)
+    implementation|documentation|mixed)
       return 0
       ;;
     *)
@@ -277,11 +277,17 @@ assert_valid_task_file() {
   local priority
   local doc_stage
   local doc_root
+  local requirements_status
+  local design_status
+  local implementation_ready
+  local critical_review_required
+  local critical_review_status
   local has_allowed_paths=0
   local has_acceptance=0
   local has_doc_outputs=0
+  local has_critical_requirements=0
 
-  for key in id title summary owner priority handoff_to status task_type; do
+  for key in id title summary owner priority handoff_to status task_type requirements_status design_status implementation_ready critical_review_required critical_review_status; do
     value="$(read_task_value "$key" "$file")"
     if [[ -z "$value" ]]; then
       errors+=("Missing required key: $key")
@@ -295,6 +301,11 @@ assert_valid_task_file() {
   priority="$(read_task_value "priority" "$file")"
   doc_stage="$(read_task_value "doc_stage" "$file")"
   doc_root="$(task_resolved_doc_root "$file")"
+  requirements_status="$(read_task_value "requirements_status" "$file")"
+  design_status="$(read_task_value "design_status" "$file")"
+  implementation_ready="$(read_task_value "implementation_ready" "$file")"
+  critical_review_required="$(read_task_value "critical_review_required" "$file")"
+  critical_review_status="$(read_task_value "critical_review_status" "$file")"
 
   if ! list_contains "$task_type" implementation documentation mixed; then
     errors+=("Unsupported task_type: ${task_type:-missing}")
@@ -316,6 +327,26 @@ assert_valid_task_file() {
     errors+=("Unsupported priority: ${priority:-missing}")
   fi
 
+  if ! list_contains "$requirements_status" pending approved; then
+    errors+=("Unsupported requirements_status: ${requirements_status:-missing}")
+  fi
+
+  if ! list_contains "$design_status" pending approved; then
+    errors+=("Unsupported design_status: ${design_status:-missing}")
+  fi
+
+  if ! list_contains "$implementation_ready" true false; then
+    errors+=("Unsupported implementation_ready: ${implementation_ready:-missing}")
+  fi
+
+  if ! list_contains "$critical_review_required" true false; then
+    errors+=("Unsupported critical_review_required: ${critical_review_required:-missing}")
+  fi
+
+  if ! list_contains "$critical_review_status" pending approved not_required; then
+    errors+=("Unsupported critical_review_status: ${critical_review_status:-missing}")
+  fi
+
   while IFS= read -r value; do
     [[ -n "$value" ]] || continue
     has_allowed_paths=1
@@ -325,6 +356,11 @@ assert_valid_task_file() {
     [[ -n "$value" ]] || continue
     has_acceptance=1
   done < <(yaml_list_values "acceptance" "$file")
+
+  while IFS= read -r value; do
+    [[ -n "$value" ]] || continue
+    has_critical_requirements=1
+  done < <(yaml_list_values "critical_requirements" "$file")
 
   if [[ "$has_acceptance" -eq 0 ]]; then
     errors+=("acceptance must contain at least one item")
@@ -344,6 +380,31 @@ assert_valid_task_file() {
       fi
       ;;
   esac
+
+  if [[ "$critical_review_required" == "true" ]]; then
+    if [[ "$critical_review_status" == "not_required" ]]; then
+      errors+=("critical_review_status cannot be not_required when critical_review_required=true")
+    fi
+    if [[ "$has_critical_requirements" -eq 0 ]]; then
+      errors+=("critical_review_required=true requires at least one critical_requirements entry")
+    fi
+  else
+    if [[ "$critical_review_status" != "not_required" ]]; then
+      errors+=("critical_review_status must be not_required when critical_review_required=false")
+    fi
+  fi
+
+  if [[ "$implementation_ready" == "true" ]]; then
+    if [[ "$requirements_status" != "approved" ]]; then
+      errors+=("implementation_ready=true requires requirements_status=approved")
+    fi
+    if [[ "$design_status" != "approved" ]]; then
+      errors+=("implementation_ready=true requires design_status=approved")
+    fi
+    if [[ "$critical_review_required" == "true" && "$critical_review_status" != "approved" ]]; then
+      errors+=("implementation_ready=true requires critical_review_status=approved when critical_review_required=true")
+    fi
+  fi
 
   if task_requires_docs "$file"; then
     if ! list_contains "$doc_stage" requirements design development evaluation; then

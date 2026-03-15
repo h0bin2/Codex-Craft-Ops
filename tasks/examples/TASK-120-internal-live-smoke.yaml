@@ -16,5 +16,15 @@ acceptance:
   - External preflight health check passes for tasks/doing/TASK-120-internal-live-smoke.yaml
   - PM, implementer, and reviewer can each produce validator-compliant output
   - The task does not require any path outside this repository
+requirements_status: approved
+design_status: approved
+implementation_ready: true
+critical_review_required: false
+critical_review_status: not_required
+critical_requirements: []
+doc_project_root: docs
+doc_stage: evaluation
+doc_outputs:
+  - 04_evaluation/internal-live-smoke.md
 handoff_to: implementer
 status: queued

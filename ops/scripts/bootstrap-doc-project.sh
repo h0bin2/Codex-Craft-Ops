@@ -66,15 +66,36 @@ write_if_missing "$PROJECT_ROOT/01_requirements/FEATURE_SPEC.md" "# Feature Spec
 ## User Scenarios
 - Describe primary user flows.
 
-## Functional Requirements
-- List concrete requirements.
+## Requirements Table
+| ID | Requirement | Priority | Owner | Notes |
+| --- | --- | --- | --- | --- |
+| RQ-001 | Replace with a concrete requirement. | high | PM | Fill with real content. |
+
+## Narrative Requirements
+- Describe each requirement in prose, including constraints and rationale.
 
 ## Acceptance Criteria
 - Define measurable success conditions.
 
+## Version History
+- v0.1 - Initial requirement capture.
+
 ## References
 - [[PRD]]
 - [[INTERFACES]]
+"
+
+write_if_missing "$PROJECT_ROOT/01_requirements/CHANGE_LOG.md" "# Requirements Change Log
+
+## Source Documents
+- [[PRD]]
+- [[FEATURE_SPEC]]
+
+## Change Entries
+- v0.1 - Initial document baseline.
+
+## Integration Decisions
+- Describe how requirement changes are merged into scope, design, and implementation plans.
 "
 
 write_if_missing "$PROJECT_ROOT/01_requirements/INTERFACES.md" "# Interfaces
@@ -152,6 +173,7 @@ write_if_missing "$PROJECT_ROOT/04_evaluation/ACCEPTANCE_REPORT.md" "# Acceptanc
 ## Inputs
 - Development: [[../03_development/IMPLEMENTATION_PLAN.md]]
 - Development: [[../03_development/WORKLOG.md]]
+- Critical Review: [[CRITICAL_REQUIREMENTS_REVIEW]]
 
 ## Checks
 - Record acceptance checks and outcomes.
@@ -160,10 +182,33 @@ write_if_missing "$PROJECT_ROOT/04_evaluation/ACCEPTANCE_REPORT.md" "# Acceptanc
 - Record unresolved issues.
 "
 
+write_if_missing "$PROJECT_ROOT/04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md" "# Critical Requirements Review
+
+## Inputs
+- Requirements: [[../01_requirements/FEATURE_SPEC.md]]
+- Change Log: [[../01_requirements/CHANGE_LOG.md]]
+- Design: [[../02_design/ARCHITECTURE.md]]
+- Development: [[../03_development/IMPLEMENTATION_PLAN.md]]
+- Development: [[../03_development/WORKLOG.md]]
+
+## Critical Requirements
+- List the critical requirements that must be revalidated against the current design and implementation state.
+
+## Design Review
+- Explain whether the current architecture still satisfies each critical requirement.
+
+## Implementation Review
+- Explain whether the current implementation plan and worklog remain aligned.
+
+## Verdict
+- Record whether the current state is valid, needs adjustment, or is blocked.
+"
+
 write_if_missing "$PROJECT_ROOT/04_evaluation/REVIEW_REPORT.md" "# Review Report
 
 ## Inputs
 - [[ACCEPTANCE_REPORT]]
+- [[CRITICAL_REQUIREMENTS_REVIEW]]
 
 ## Findings
 - Record reviewer findings.

@@ -19,12 +19,22 @@ context_files:
 acceptance:
   - bash ops/scripts/validate-task.sh tasks/examples/TASK-110-define-document-inclusive-flow.yaml
   - bash ops/scripts/validate-docs.sh tasks/examples/TASK-110-define-document-inclusive-flow.yaml
+  - bash ops/scripts/validate-readiness.sh tasks/examples/TASK-110-define-document-inclusive-flow.yaml
   - Reviewer can validate both repo outputs and repo-internal docs with documented commands
+requirements_status: approved
+design_status: approved
+implementation_ready: true
+critical_review_required: true
+critical_review_status: approved
+critical_requirements:
+  - RQ-001
+  - RQ-002
 doc_project_root: docs
 doc_stage: development
 doc_outputs:
   - 03_development/IMPLEMENTATION_PLAN.md
   - 03_development/WORKLOG.md
   - 04_evaluation/ACCEPTANCE_REPORT.md
+  - 04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md
 handoff_to: reviewer
 status: queued

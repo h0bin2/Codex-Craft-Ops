@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Purpose
-이 저장소는 `tmux + Codex` 기반 멀티에이전트 운영 스타터팩을 정리하는 곳입니다. 현재 기본 범위는 `pm-orchestrator`, `implementer`, `reviewer` 3개 역할을 중심으로, 작업 큐, handoff, 리뷰 흐름을 파일 기반으로 운영할 수 있게 만드는 것입니다. 모든 기능 작업은 코드 변경과 함께 저장소 내부 `docs/` 문서 작성 task를 포함해야 합니다.
+이 저장소는 `tmux + Codex` 기반 멀티에이전트 운영 스타터팩을 정리하는 곳입니다. 현재 기본 범위는 `pm-orchestrator`, `implementer`, `reviewer` 3개 역할을 중심으로, 작업 큐, handoff, 리뷰 흐름을 파일 기반으로 운영할 수 있게 만드는 것입니다. 모든 기능 작업은 코드 변경과 함께 저장소 내부 `docs/` 문서 작성 task를 포함해야 하며, 요구사항 승인과 설계 승인 없이 실제 구현으로 넘어가지 않습니다.
 
 ## Starter Pack Structure
 - `ops/agents/`: 역할 정의서. 각 에이전트의 책임, 금지사항, handoff 규칙 관리
@@ -28,9 +28,11 @@
 4. `reviewer`는 `handoffs/templates/review-report.md` 형식으로 검증 결과를 기록하며, 문서 task나 mixed task는 `bash ops/scripts/validate-docs.sh <task-file>` 결과를 함께 확인합니다.
 5. 통과 시 작업은 `done`, 수정 필요 시 implementer로 되돌리고, 환경 문제는 `blocked`로 처리합니다.
 6. live Codex 실행 전에는 `bash ops/scripts/check-codex-health.sh <task-file>`를 통과해야 하며, 실패 시 task는 즉시 `blocked`로 전환하고 `pm-orchestrator`로 되돌립니다.
+7. `implementer`는 `bash ops/scripts/validate-readiness.sh <task-file>`를 통과한 구현 task만 시작할 수 있습니다.
 
 ## Required Conventions
 - 작업 파일은 YAML을 사용하며 `id`, `task_type`, `owner`, `priority`, `allowed_paths`, `acceptance`, `handoff_to`, `status`를 반드시 포함합니다.
+- 모든 task는 `requirements_status`, `design_status`, `implementation_ready`, `critical_review_required`, `critical_review_status`를 포함합니다.
 - `documentation`, `mixed` task는 `doc_project_root`, `doc_stage`, `doc_outputs`를 반드시 포함합니다.
 - handoff와 review report는 템플릿 형식을 유지하고 마지막 상태와 다음 owner를 명시합니다.
 - 상태값은 `queued`, `assigned`, `running`, `blocked`, `needs_review`, `done`만 사용합니다.
@@ -44,8 +46,10 @@
 - destructive action은 승인 없이 수행하지 않습니다.
 - 새 운영 규칙을 추가하면 `AGENTS.md`, 관련 프롬프트, 템플릿의 용어를 함께 맞춥니다.
 - 문서는 단계별 폴더 구조를 유지하고 설계 문서는 요구사항을, 개발 문서는 요구사항과 설계를, 평가는 개발 결과를 참조해야 합니다.
+- 요구사항 문서는 표 형식과 서술식 요구사항을 함께 포함해야 하며, 변경 시 `01_requirements/CHANGE_LOG.md`로 버전 통합 이력을 남깁니다.
+- critical requirement가 있으면 `04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md`에서 현재 설계와 구현 상태의 타당성을 검토해야 합니다.
 - remote MCP는 기본적으로 비활성화한 상태로 live runner를 사용합니다.
-- 스크립트는 `bash ops/scripts/start-session.sh`, `pick-task.sh`, `run-agent.sh`, `advance-task.sh`, `status-board.sh`, `validate-task.sh`, `validate-output.sh`, `validate-docs.sh`, `check-codex-health.sh`, `bootstrap-doc-project.sh` 흐름을 기준으로 사용합니다.
+- 스크립트는 `bash ops/scripts/start-session.sh`, `pick-task.sh`, `run-agent.sh`, `advance-task.sh`, `status-board.sh`, `validate-task.sh`, `validate-output.sh`, `validate-docs.sh`, `validate-readiness.sh`, `check-codex-health.sh`, `bootstrap-doc-project.sh` 흐름을 기준으로 사용합니다.
 
 ## Next Expansion
 다음 확장 후보는 `repairer`, `qa-auditor`, `release-guard`입니다. 다만 먼저 공통 runner, 작업 계약, 검증 자동화가 안정화된 뒤에 추가하는 것을 기본 원칙으로 합니다.

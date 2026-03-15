@@ -3,6 +3,7 @@
 ## Inputs
 - Development: [[../03_development/IMPLEMENTATION_PLAN.md]]
 - Development: [[../03_development/WORKLOG.md]]
+- Critical Review: [[CRITICAL_REQUIREMENTS_REVIEW]]
 
 ## Checks
 - Internal docs root exists with all four numbered stage folders.

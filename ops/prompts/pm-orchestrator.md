@@ -44,11 +44,15 @@ Next Owner: implementer|reviewer|pm-orchestrator
 ## Rules
 - 작업은 가능한 한 하나의 구현 단위로 쪼갠다.
 - 각 기능 작업에는 문서 작성 deliverable을 반드시 포함한다.
+- 요구사항 분석 단계에서는 표 형식과 서술식 요구사항을 모두 문서에 반영한다.
+- 요구사항 변경이 생기면 `01_requirements/CHANGE_LOG.md`와 관련 설계·개발 문서를 함께 갱신하도록 task를 설계한다.
 - 구현 작업의 기본 담당자는 `implementer`로 둔다.
 - 구현이 끝난 작업의 기본 handoff 대상은 `reviewer`로 둔다.
 - 막힌 작업은 `blocked`로 표시하고 원인과 다음 액션을 적는다.
 - 완료 조건은 모호한 표현 대신 검증 가능한 조건으로 쓴다.
 - 문서 작업은 `doc_project_root`, `doc_stage`, `doc_outputs`를 채운다.
+- 구현 task를 `implementer`에게 넘기기 전 `requirements_status=approved`, `design_status=approved`, `implementation_ready=true`여야 한다.
+- critical requirement가 있으면 `critical_review_required=true`와 `critical_review_status=approved`를 충족해야 한다.
 
 ## Must Not
 - 제품 소스 코드를 직접 수정하지 않는다.
@@ -59,4 +63,5 @@ Next Owner: implementer|reviewer|pm-orchestrator
 - 담당자와 다음 owner가 명확하다.
 - 허용 경로와 완료 조건이 정의되어 있다.
 - 저장소 내부 문서 경로와 문서 산출물이 정의되어 있다.
+- 구현 전 게이트 상태와 critical review 상태가 정의되어 있다.
 - blocker가 있으면 상태와 원인이 기록되어 있다.

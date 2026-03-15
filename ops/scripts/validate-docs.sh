@@ -44,12 +44,14 @@ done
 for file in \
   01_requirements/PRD.md \
   01_requirements/FEATURE_SPEC.md \
+  01_requirements/CHANGE_LOG.md \
   01_requirements/INTERFACES.md \
   02_design/ARCHITECTURE.md \
   02_design/DECISIONS.md \
   03_development/IMPLEMENTATION_PLAN.md \
   03_development/WORKLOG.md \
   04_evaluation/ACCEPTANCE_REPORT.md \
+  04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md \
   04_evaluation/REVIEW_REPORT.md; do
   require_doc_path "$file"
 done
@@ -66,6 +68,10 @@ file_contains_reference "$DOC_ROOT/02_design/ARCHITECTURE.md" "PRD.md" \
 file_contains_reference "$DOC_ROOT/02_design/DECISIONS.md" "ARCHITECTURE.md" \
   || die "DECISIONS.md must reference ARCHITECTURE.md"
 
+file_contains_reference "$DOC_ROOT/01_requirements/CHANGE_LOG.md" "FEATURE_SPEC.md" \
+  || file_contains_reference "$DOC_ROOT/01_requirements/CHANGE_LOG.md" "PRD.md" \
+  || die "CHANGE_LOG.md must reference a requirements document"
+
 file_contains_reference "$DOC_ROOT/03_development/IMPLEMENTATION_PLAN.md" "FEATURE_SPEC.md" \
   || die "IMPLEMENTATION_PLAN.md must reference FEATURE_SPEC.md"
 
@@ -78,6 +84,11 @@ file_contains_reference "$DOC_ROOT/03_development/WORKLOG.md" "IMPLEMENTATION_PL
 file_contains_reference "$DOC_ROOT/04_evaluation/ACCEPTANCE_REPORT.md" "IMPLEMENTATION_PLAN.md" \
   || file_contains_reference "$DOC_ROOT/04_evaluation/ACCEPTANCE_REPORT.md" "WORKLOG.md" \
   || die "ACCEPTANCE_REPORT.md must reference development documentation"
+
+file_contains_reference "$DOC_ROOT/04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md" "ARCHITECTURE.md" \
+  || file_contains_reference "$DOC_ROOT/04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md" "IMPLEMENTATION_PLAN.md" \
+  || file_contains_reference "$DOC_ROOT/04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md" "WORKLOG.md" \
+  || die "CRITICAL_REQUIREMENTS_REVIEW.md must reference design or development documentation"
 
 file_contains_reference "$DOC_ROOT/04_evaluation/REVIEW_REPORT.md" "ACCEPTANCE_REPORT.md" \
   || die "REVIEW_REPORT.md must reference ACCEPTANCE_REPORT.md"

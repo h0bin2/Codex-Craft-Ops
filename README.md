@@ -56,6 +56,7 @@
 - 내부 `docs/` 기반 운영 모드 적용
 - live run에서 remote MCP 기본 비활성화
 - `TASK-120` 기준 internal live smoke 검증 완료
+- 요구사항 승인, 설계 승인, critical review 승인 기반 구현 게이트 지원
 
 ## 다음 범위
 

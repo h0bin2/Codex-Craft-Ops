@@ -4,11 +4,13 @@
 - Every feature task includes repository-internal documentation work.
 - Project documents live under `docs/`.
 - The docs root always keeps `01_requirements`, `02_design`, `03_development`, `04_evaluation`.
+- Implementation starts only after requirements and design are explicitly approved.
 
 ## Canonical Commands
 - `bash ops/scripts/validate-task.sh <task-file>`
 - `bash ops/scripts/validate-output.sh <role> <output-file>`
 - `bash ops/scripts/validate-docs.sh <task-file>`
+- `bash ops/scripts/validate-readiness.sh <task-file>`
 - `bash ops/scripts/check-codex-health.sh <task-file>`
 - `bash ops/scripts/bootstrap-doc-project.sh docs`
 - `bash ops/scripts/check-codex-health.sh tasks/doing/TASK-120-internal-live-smoke.yaml`
@@ -25,9 +27,10 @@ Document-inclusive flow:
 2. Bootstrap the repo-internal docs root before running documentation or mixed tasks.
 3. Run `bash ops/scripts/pick-task.sh` to assign the next task.
 4. Run `bash ops/scripts/check-codex-health.sh <task-file>` before each live agent execution.
-5. Run `bash ops/scripts/run-agent.sh <role> <task-file>` for PM, implementer, and reviewer.
-6. Advance task state with `bash ops/scripts/advance-task.sh <role> <task-file> <output-file>`.
-7. Re-run `validate-task.sh`, `validate-output.sh`, and `validate-docs.sh` when debugging failures.
+5. Run `bash ops/scripts/validate-readiness.sh <task-file>` before each implementer execution for implementation or mixed work.
+6. Run `bash ops/scripts/run-agent.sh <role> <task-file>` for PM, implementer, and reviewer.
+7. Advance task state with `bash ops/scripts/advance-task.sh <role> <task-file> <output-file>`.
+8. Re-run `validate-task.sh`, `validate-output.sh`, `validate-docs.sh`, and `validate-readiness.sh` when debugging failures.
 
 ## Review Gates
 - Task schema is valid.
@@ -35,6 +38,9 @@ Document-inclusive flow:
 - Required numbered stage folders exist under `docs/`.
 - Required baseline documents exist.
 - `doc_outputs` files exist.
+- Requirement docs include a requirements table, narrative requirements, and version history.
+- Requirement changes are merged through `01_requirements/CHANGE_LOG.md`.
+- Critical requirements are revalidated through `04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md`.
 - Design docs reference requirements.
 - Development docs reference requirements and design.
 - Evaluation docs reference development artifacts.

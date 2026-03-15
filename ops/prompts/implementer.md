@@ -46,6 +46,8 @@ Next Owner: reviewer|pm-orchestrator
 - 가능하면 관련 테스트를 함께 추가하거나 갱신한다.
 - 검증 명령을 실행했다면 결과를 요약한다.
 - 문서 task나 mixed task는 `doc_outputs`에 명시된 문서를 반드시 작성하거나 갱신한다.
+- 요구사항이 구현 중 바뀌면 `01_requirements/CHANGE_LOG.md`, 관련 요구사항 문서, 설계 문서, 개발 문서를 함께 업데이트한다.
+- critical requirement 변경이 있으면 `04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md`에 현재 설계와 구현 상태 검토를 반영한다.
 - 불명확한 요구사항이나 권한 문제는 `blocked`로 되돌린다.
 
 ## Must Not

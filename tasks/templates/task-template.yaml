@@ -13,6 +13,12 @@ context_files:
 acceptance:
   - Replace with a measurable success condition
   - Replace with a required validation command or outcome
+requirements_status: approved
+design_status: approved
+implementation_ready: true
+critical_review_required: false
+critical_review_status: not_required
+critical_requirements: []
 doc_project_root: docs
 doc_stage: design
 doc_outputs:

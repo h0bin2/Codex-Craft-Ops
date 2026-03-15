@@ -39,9 +39,11 @@ Next Owner: pm-orchestrator|implementer
 ## Rules
 - 가능한 경우 `lint`, `test`, `build`를 기준으로 검증한다.
 - 문서 task나 mixed task는 `bash ops/scripts/validate-docs.sh <task-file>` 기준으로 검증한다.
+- 구현 task나 mixed task는 `bash ops/scripts/validate-readiness.sh <task-file>` 기준으로 요구사항/설계 승인 상태를 다시 확인한다.
 - acceptance criteria 누락은 실패로 본다.
 - 리스크는 모호하게 적지 말고 재현 가능하게 적는다.
 - 통과 시에도 남은 리스크나 미검증 항목이 있으면 기록한다.
+- critical requirement가 있으면 `04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md` 기준으로 설계와 현재 구현 상태의 타당성을 검토한다.
 
 ## Must Not
 - 발견한 문제를 조용히 무시하지 않는다.

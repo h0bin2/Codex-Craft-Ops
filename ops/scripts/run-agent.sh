@@ -121,6 +121,10 @@ parse_health_field() {
   printf '%s\n' "$HEALTH_OUTPUT" | awk -F= -v field="$field" '$1 == field { sub("^[^=]+=", "", $0); print; exit }'
 }
 
+parse_readiness_reason() {
+  printf '%s\n' "$READINESS_OUTPUT" | tail -n 1
+}
+
 write_blocked_output() {
   local reason="$1"
   local health_log="$2"
@@ -211,6 +215,35 @@ cleanup_run_agent() {
 }
 
 trap cleanup_run_agent EXIT INT TERM
+
+if [[ "$ROLE" == "implementer" && "$(task_type_from_file "$TASK_FILE")" != "documentation" ]]; then
+  set +e
+  READINESS_OUTPUT="$(bash "$SCRIPT_DIR/validate-readiness.sh" "$TASK_FILE" 2>&1)"
+  READINESS_EXIT=$?
+  set -e
+
+  if (( READINESS_EXIT != 0 )); then
+    READINESS_REASON="$(parse_readiness_reason)"
+    [[ -n "$READINESS_REASON" ]] || READINESS_REASON="Implementation readiness gate failed."
+    printf '%s\n' "$READINESS_OUTPUT" >>"$LOG_FILE"
+    write_blocked_output "$READINESS_REASON" "none" "none" "Approve requirements and design, update the change log, then rerun validate-readiness.sh before retrying."
+    bash "$SCRIPT_DIR/validate-output.sh" "$ROLE" "$OUTPUT_FILE" >>"$LOG_FILE" 2>&1
+    update_task_value "$TASK_FILE" "status" "blocked"
+    update_task_value "$TASK_FILE" "owner" "pm-orchestrator"
+    update_task_value "$TASK_FILE" "handoff_to" "pm-orchestrator"
+    case "$TASK_FILE" in
+      "$TASKS_DONE_DIR"/*|"$TASKS_DOING_DIR"/*) ;;
+      *)
+        TASK_FILE="$(move_task_file "$TASK_FILE" "$TASKS_DOING_DIR")"
+        ;;
+    esac
+    RUN_AGENT_COMPLETED=1
+    trap - EXIT INT TERM
+    write_role_state "$ROLE" "$TASK_ID" "$TASK_FILE" "blocked" "$OUTPUT_FILE"
+    write_role_state "pm-orchestrator" "$TASK_ID" "$TASK_FILE" "blocked" "$OUTPUT_FILE"
+    die "Implementation readiness validation failed. See $LOG_FILE"
+  fi
+fi
 
 set +e
 HEALTH_OUTPUT="$(bash "$SCRIPT_DIR/check-codex-health.sh" "$TASK_FILE" 2>&1)"

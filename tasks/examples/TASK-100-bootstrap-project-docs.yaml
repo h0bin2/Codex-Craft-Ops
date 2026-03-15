@@ -14,17 +14,25 @@ acceptance:
   - All required stage directories exist under doc_project_root
   - All required baseline documents exist under doc_project_root
   - bash ops/scripts/validate-docs.sh tasks/examples/TASK-100-bootstrap-project-docs.yaml
+requirements_status: pending
+design_status: pending
+implementation_ready: false
+critical_review_required: false
+critical_review_status: not_required
+critical_requirements: []
 doc_project_root: docs
 doc_stage: requirements
 doc_outputs:
   - 01_requirements/PRD.md
   - 01_requirements/FEATURE_SPEC.md
+  - 01_requirements/CHANGE_LOG.md
   - 01_requirements/INTERFACES.md
   - 02_design/ARCHITECTURE.md
   - 02_design/DECISIONS.md
   - 03_development/IMPLEMENTATION_PLAN.md
   - 03_development/WORKLOG.md
   - 04_evaluation/ACCEPTANCE_REPORT.md
+  - 04_evaluation/CRITICAL_REQUIREMENTS_REVIEW.md
   - 04_evaluation/REVIEW_REPORT.md
 handoff_to: reviewer
 status: queued
