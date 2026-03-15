@@ -1,0 +1,22 @@
+id: TASK-001
+title: Replace with a short task title
+summary: >
+  Describe the task goal, expected outcome, and why it matters.
+task_type: mixed
+owner: implementer
+priority: high
+dependencies: []
+allowed_paths:
+  - ops/
+context_files:
+  - docs/02_design/tmux-codex-multi-agent-ops-draft.md
+acceptance:
+  - Replace with a measurable success condition
+  - Replace with a required validation command or outcome
+doc_project_root: docs
+doc_stage: design
+doc_outputs:
+  - 02_design/ARCHITECTURE.md
+  - 02_design/DECISIONS.md
+handoff_to: reviewer
+status: queued

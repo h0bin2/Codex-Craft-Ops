@@ -1,0 +1,30 @@
+id: TASK-110
+title: Add document-inclusive task flow to starter pack
+summary: >
+  Extend the starter pack so mixed tasks can update starter-pack code and
+  repo-internal documents together with validator-backed review.
+task_type: mixed
+owner: implementer
+priority: high
+dependencies:
+  - TASK-100
+allowed_paths:
+  - ops/
+  - docs/
+  - handoffs/
+  - tasks/
+context_files:
+  - AGENTS.md
+  - docs/02_design/tmux-codex-multi-agent-ops-draft.md
+acceptance:
+  - bash ops/scripts/validate-task.sh tasks/examples/TASK-110-define-document-inclusive-flow.yaml
+  - bash ops/scripts/validate-docs.sh tasks/examples/TASK-110-define-document-inclusive-flow.yaml
+  - Reviewer can validate both repo outputs and repo-internal docs with documented commands
+doc_project_root: docs
+doc_stage: development
+doc_outputs:
+  - 03_development/IMPLEMENTATION_PLAN.md
+  - 03_development/WORKLOG.md
+  - 04_evaluation/ACCEPTANCE_REPORT.md
+handoff_to: reviewer
+status: queued

@@ -1,0 +1,20 @@
+id: TASK-120
+title: Internal live codex smoke test
+summary: >
+  Run a live Codex smoke test that touches only repo-internal files so the
+  Codex runtime can be validated without any out-of-repo document dependency.
+task_type: implementation
+owner: pm-orchestrator
+priority: critical
+dependencies: []
+allowed_paths:
+  - docs/
+context_files:
+  - AGENTS.md
+  - docs/03_development/document-inclusive-mvp.md
+acceptance:
+  - External preflight health check passes for tasks/doing/TASK-120-internal-live-smoke.yaml
+  - PM, implementer, and reviewer can each produce validator-compliant output
+  - The task does not require any path outside this repository
+handoff_to: implementer
+status: queued

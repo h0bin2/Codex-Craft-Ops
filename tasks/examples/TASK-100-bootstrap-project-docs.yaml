@@ -1,0 +1,30 @@
+id: TASK-100
+title: Bootstrap repo-internal project documentation
+summary: >
+  Create the repo-internal document skeleton and baseline requirement,
+  design, development, and evaluation documents for the Instagram Feed Creator project.
+task_type: documentation
+owner: implementer
+priority: critical
+dependencies: []
+allowed_paths: []
+context_files:
+  - docs/02_design/tmux-codex-multi-agent-ops-draft.md
+acceptance:
+  - All required stage directories exist under doc_project_root
+  - All required baseline documents exist under doc_project_root
+  - bash ops/scripts/validate-docs.sh tasks/examples/TASK-100-bootstrap-project-docs.yaml
+doc_project_root: docs
+doc_stage: requirements
+doc_outputs:
+  - 01_requirements/PRD.md
+  - 01_requirements/FEATURE_SPEC.md
+  - 01_requirements/INTERFACES.md
+  - 02_design/ARCHITECTURE.md
+  - 02_design/DECISIONS.md
+  - 03_development/IMPLEMENTATION_PLAN.md
+  - 03_development/WORKLOG.md
+  - 04_evaluation/ACCEPTANCE_REPORT.md
+  - 04_evaluation/REVIEW_REPORT.md
+handoff_to: reviewer
+status: queued
